@@ -139,6 +139,20 @@ int rectangle(char n, int l, int b){
 	return 0;
 }
 
+class Node {
+	public :
+	int data; // to store the data stored
+
+	Node *next; // to store the address of next pointer
+
+	Node(int data) {
+
+		this -> data = data;
+
+		next = NULL;
+
+	}
+};
 //-------------------------------PRINT LINKEDLIST------------------------------------//
 void print(Node *head) {
 	Node *tmp = head;
@@ -213,6 +227,348 @@ Node* reverseLL(Node *head) {
 
 //---------------------------STACK---------PUSH POP TOP-------------//
 
+#include <climits>
+template <typename T> // Templates initialised
+class StackUsingArray {
+	T *data; // Template type of data used
+
+	int nextIndex;
+
+	int capacity;	
+
+	public :
+
+	StackUsingArray() {
+
+
+		data = new T[4];
+
+		nextIndex = 0;
+
+		capacity = 4;
+
+	}
+// return the number of elements present in my stack
+
+	int size() {
+
+		return nextIndex;
+
+	}
+bool isEmpty() {
+return nextIndex == 0;
+}
+// insert element
+
+  void push(T element) {
+
+    if(nextIndex == capacity) {
+
+      T *newData = new T[2 * capacity];
+
+      for(int i = 0; i < capacity; i++) {
+
+        newData[i] = data[i];
+
+      }
+ 
+      capacity *= 2;
+
+      delete [] data;
+
+			data = newData;
+
+		}
+
+		data[nextIndex] = element;
+
+		nextIndex++;
+
+	}
+// delete element
+
+	T pop() {
+
+		if(isEmpty()) {
+
+			cout << "Stack is empty " << endl;
+
+			return 0;
+
+		}
+
+		nextIndex--;
+
+		return data[nextIndex];
+
+	}
+// For extracting top element
+T top() {
+
+	if(isEmpty()) {
+
+		cout << "Stack is empty " << endl;
+
+		return 0;
+
+	}
+
+	return data[nextIndex - 1];
+
+}
+
+};
+
+
+//------------------------------------------QUEUE PUSH POP TOP---------------------------//
 
 
 
+template <typename T>
+class QueueUsingArray {
+	T *data;
+	int nextIndex;
+	int firstIndex;
+	int size;
+	int capacity;
+	public :
+	QueueUsingArray(int s) {
+		data = new T[s];
+		nextIndex = 0;
+		firstIndex = -1;
+		size = 0;
+		capacity = s;
+	}
+
+	int getSize() {
+
+		return size;
+
+	}
+
+	bool isEmpty() {
+
+		return size == 0;
+
+	}
+
+	void enqueue(T element) {
+
+		if(size == capacity) { // When size becomes full
+
+			T *newData = new T[2 * capacity]; // we simply doubled the
+// capacity
+
+			int j = 0;
+
+			for(int i = firstIndex; i < capacity; i++) { // Now copied the
+
+		//		Elements to new one
+
+				newData[j] = data[i];
+
+				j++;
+
+			}
+
+			for(int i = 0; i < firstIndex; i++) { // Overcoming the initial
+
+				// cyclic insertion by copying
+
+				// the elements linearly
+
+				newData[j] = data[i];	
+
+				j++;
+
+			}
+
+			delete [] data;
+
+			data = newData;
+
+			firstIndex = 0;
+
+			nextIndex = capacity;
+
+			capacity *= 2; // Updated here as well
+//cout << "Queue Full ! " << endl;
+// return;
+}
+
+		data[nextIndex] = element;
+
+		nextIndex = (nextIndex + 1) % capacity ;
+
+		if(firstIndex == -1) {
+
+			firstIndex = 0;
+
+		}
+
+		size++;
+
+	}
+
+	T front() {
+
+		if(isEmpty()) {
+
+			cout << "Queue is empty ! " << endl;
+
+			return 0;
+
+		}
+
+		return data[firstIndex];
+
+	}
+
+	T dequeue() {
+
+		if(isEmpty()) {
+
+			cout << "Queue is empty ! " << endl;
+
+			return 0;
+
+		}
+
+		T ans = data[firstIndex];
+
+		firstIndex = (firstIndex + 1) % capacity;
+
+		size--;
+
+		if(size == 0) {
+
+			firstIndex = -1;
+
+			nextIndex = 0;
+
+		}
+
+		return ans;
+
+	}
+}
+
+
+
+
+
+//------------------BINARY TREE CLASS -----------------//
+class BinaryTreeNode {
+
+	public:
+
+	T data; // To store data
+
+	BinaryTreeNode* left; // for storing the reference to left pointer
+
+	BinaryTreeNode* right; // for storing the reference to right pointer
+// Constructor
+
+	BinaryTreeNode(T data) {
+
+		this->data = data; // Initializes data of the node
+
+		left = NULL; // initializes left and right pointers to NULL
+
+		right = NULL;
+
+	}
+// Destructor
+
+	~BinaryTreeNode() {
+
+		delete left; // Deletes the left pointer
+
+		delete right; // Deletes the right pointer
+
+	} // As it ends, deletes the node itself
+};
+
+
+
+//-------------TAKE INPUT RECURSIVELY------------------//
+void printTree(BinaryTreeNode<int>* root) {
+
+	if (root == NULL) { // Base case
+
+		return;
+
+	}
+
+	cout << root->data << ":"; // printing the data at root node
+
+	if (root->left != NULL) { // checking if left not NULL, then print it’s data also
+
+		cout << "L" << root->left->data;
+
+	}
+
+	if (root->right != NULL) { // checking if right not NULL, then print it’s data also
+
+		cout << "R" << root->right->data;
+
+	}
+
+	cout << endl;
+	printTree(root->left); // Now recursively, call on the left and right subtrees	
+	printTree(root->right);
+}
+
+//-------------------TAKE INPUT LEVELWISE--------------------------//
+
+BinaryTreeNode<int>* takeInput() {
+
+	int rootData;
+
+	cout << "Enter data" << endl;
+
+	cin >> rootData; // taking data as input
+
+	if (rootData == -1) { // if the data is -1, means NULL pointer
+
+	return NULL;
+
+}
+// Dynamically create the root Node which calls constructor of the same class
+
+	BinaryTreeNode<int>* root = new BinaryTreeNode<int>(rootData);
+// Recursively calling over left subtree
+
+	BinaryTreeNode<int>* leftChild = takeInput();
+// Recursively calling over right subtree
+
+	BinaryTreeNode<int>* rightChild = takeInput();
+
+	root->left = leftChild; // now allotting left and right childs to the root node
+
+	root->right = rightChild;
+
+	return root;
+
+}
+
+//----------------INorder traversal-----------------------//
+
+void inorder(BinaryTreeNode<int>* root) {
+
+	if (root == NULL) { // Base case when node’s value is NULL
+
+		return;
+
+	}
+
+	inorder(root->left); //Recursive call over left part as it needs
+// to be printed first
+
+	cout << root->data << " "; // Now printed root’s data
+
+	inorder(root->right); // Finally a recursive call made over right subtree
+}
+
+
+//--------------------
