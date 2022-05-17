@@ -138,3 +138,81 @@ int rectangle(char n, int l, int b){
 	}
 	return 0;
 }
+
+//-------------------------------PRINT LINKEDLIST------------------------------------//
+void print(Node *head) {
+	Node *tmp = head;
+	while(tmp != NULL) {	
+		cout << tmp->data << “ “;
+		tmp = tmp->next;
+	}
+	cout << endl;
+}
+
+//-----------------------------TAKE INPUT IN LINKEDLIST------------------------------//
+Node* takeInput() {
+	int data;
+	cin >> data;
+	Node *head = NULL;
+	Node *tail = NULL;
+	while(data != -1) { // -1 is used for terminating
+		Node *newNode = new Node(data);
+		if(head == NULL) {
+			head = newNode;
+			tail = newNode;
+		}
+		else {
+			tail -> next = newNode;
+			tail = tail -> next;
+// OR
+// tail = newNode;
+		}
+		cin >> data;
+	}
+	return head;
+}
+
+
+//-------------------------------INSERT NODE IN LINKEDLIST-----------------------------//
+Node* insertNode(Node *head, int i, int data) {
+	Node *newNode = new Node(data);
+	int count = 0;
+	Node *temp = head;
+	if(i == 0) { //Case 2
+		newNode -> next = head;
+		head = newNode;
+		return head;
+	}
+	while(temp != NULL && count < i - 1) { //Case 3
+		temp = temp -> next;
+		count++;
+	}
+	if(temp != NULL) {
+		Node *a = temp -> next;
+		temp -> next = newNode;
+		newNode -> next = a;
+	}
+	return head; //Returns the new head pointer after insertion
+}
+
+//---------------------------REVERSE A LINKED LIST--------------------//
+Node* reverseLL(Node *head) {
+	if(head == NULL || head -> next == NULL) { //Base case
+	return head;
+	}
+	Node *smallAns = reverseLL(head -> next); // Recursive call
+	Node *temp = smallAns; // small answer that
+	while(temp -> next != NULL) { // stores the reversed
+		temp = temp -> next; // list by traversing the
+	} // reversed list and
+	// then appending the
+	temp -> next = head; // next element to it.
+	head -> next = NULL;
+	return smallAns;
+}
+
+//---------------------------STACK---------PUSH POP TOP-------------//
+
+
+
+
